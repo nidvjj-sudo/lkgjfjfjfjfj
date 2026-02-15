@@ -133,28 +133,28 @@
    <!-- Background Glow -->
    <div class="fixed top-[-20%] right-[-10%] w-[600px] h-[600px] bg-white opacity-[0.03] blur-[100px] rounded-full pointer-events-none"></div>
 
-   <audio id="bgMusic" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
+   <audio id="bgMusic" autoplay loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
 
    <div class="relative z-10 max-w-5xl mx-auto">
     
     <!-- Header -->
-    <header class="flex justify-between items-center mb-12 opacity-0 animate-slide-up">
-     <div class="flex items-center gap-4 group cursor-pointer">
-      <div class="w-12 h-12 border border-white/20 bg-black flex items-center justify-center relative overflow-hidden group-hover:border-white transition-colors">
-       <i class="fa-brands fa-discord text-2xl text-white relative z-10 glitch-hover"></i>
-       <div class="absolute inset-0 bg-white/10 transform scale-0 group-hover:scale-100 transition-transform"></div>
-      </div>
-      <div>
-          <h1 class="text-xl font-bold tracking-wider uppercase">My information</h1>
-          <p class="text-xs text-gray-500 mono">v.2.0.4</p>
-      </div>
-     </div>
-
-     <button id="musicToggle" class="flex items-center gap-3 px-4 py-2 glass rounded-none border border-white/10 hover:bg-white/5 transition-all group">
-      <div class="music-visualizer flex items-end h-4" id="visualizer"><span></span><span></span><span></span><span></span><span></span></div>
-      <span class="text-xs mono uppercase tracking-widest" id="musicStatus">Play Audio</span> 
-     </button>
-    </header>
+    <header class="hidden">
+        <div class="flex items-center gap-4 group cursor-pointer">
+         <div class="w-12 h-12 border border-white/20 bg-black flex items-center justify-center relative overflow-hidden group-hover:border-white transition-colors">
+          <i class="fa-brands fa-discord text-2xl text-white relative z-10 glitch-hover"></i>
+          <div class="absolute inset-0 bg-white/10 transform scale-0 group-hover:scale-100 transition-transform"></div>
+         </div>
+         <div>
+             <h1 class="text-xl font-bold tracking-wider uppercase">My information</h1>
+             <p class="text-xs text-gray-500 mono">v.2.0.4</p>
+         </div>
+        </div>
+   
+        <button id="musicToggle" class="flex items-center gap-3 px-4 py-2 glass rounded-none border border-white/10 hover:bg-white/5 transition-all group">
+         <div class="music-visualizer flex items-end h-4" id="visualizer"><span></span><span></span><span></span><span></span><span></span></div>
+         <span class="text-xs mono uppercase tracking-widest" id="musicStatus">Play Audio</span> 
+        </button>
+       </header>
 
     <div class="grid lg:grid-cols-12 gap-8">
      
@@ -347,6 +347,39 @@
         </div>
       </div>
 
+                 <!-- Time & Weather Widget -->
+                 <div class="glass p-6 opacity-0 animate-slide-up delay-200 grid md:grid-cols-2 gap-6 items-center">
+                    <!-- Time -->
+                    <div class="flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/10 pb-4 md:pb-0">
+                         <div class="text-xs text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2">
+                             <i class="fa-regular fa-clock"></i> Local Time
+                         </div>
+                         <div class="text-4xl font-bold mono tracking-tighter text-white" id="clockTime">00:00:00</div>
+                         <div class="text-sm text-gray-500 mt-1" id="clockDate">Loading date...</div>
+                    </div>
+                    
+                    <!-- Weather -->
+                    <div class="flex items-center justify-between md:pl-4">
+                         <div>
+                             <div class="text-xs text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2">
+                                 <i class="fa-solid fa-location-arrow text-red-500"></i> Bangkok, TH
+                             </div>
+                             <div class="flex items-end gap-2">
+                                 <div class="text-4xl font-bold text-white" id="weatherTemp">--°</div>
+                                 <div class="text-sm text-gray-500 mb-1.5" id="weatherDesc">Loading...</div>
+                             </div>
+                             <div class="flex gap-3 mt-2 text-xs text-gray-500">
+                                 <span><i class="fa-solid fa-droplet text-blue-400"></i> <span id="weatherHum">--%</span></span>
+                                 <span><i class="fa-solid fa-wind text-gray-400"></i> <span id="weatherWind">-- km/h</span></span>
+                             </div>
+                         </div>
+                         <div class="text-5xl text-gray-300 weather-icon-anim" id="weatherIcon">
+                             <i class="fa-solid fa-cloud"></i>
+                         </div>
+                    </div>
+                  </div>
+
+
       <!-- Footer / Contact -->
       <div class="glass p-6 opacity-0 animate-slide-up delay-300 flex flex-col md:flex-row justify-between items-center gap-4">
           <div class="text-sm text-gray-400">
@@ -378,26 +411,71 @@
   <script>
     const DISCORD_USER_ID = '1464717312996278498'; 
     const music = document.getElementById('bgMusic');
-    const musicToggle = document.getElementById('musicToggle');
-    const musicStatus = document.getElementById('musicStatus');
-    const visualizer = document.getElementById('visualizer');
-    let isPlaying = false;
 
-    musicToggle.addEventListener('click', () => {
-      if (isPlaying) {
-        music.pause();
-        musicStatus.textContent = 'Play Audio';
-        visualizer.style.opacity = '0.3';
-        isPlaying = false;
-      } else {
-        music.play().catch(() => {
-          musicStatus.textContent = 'Error';
-        });
-        musicStatus.textContent = 'Stop Audio';
-        visualizer.style.opacity = '1';
-        isPlaying = true;
-      }
-    });
+// ลดเสียง (0.0 - 1.0)
+music.volume = 0.2; 
+
+// พยายามเล่นอัตโนมัติ (กัน browser block)
+window.addEventListener("load", () => {
+  music.play().catch(() => {
+    console.log("Autoplay blocked by browser");
+  });
+});
+
+
+        // --- Clock System ---
+        function updateClock() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('th-TH', { hour12: false });
+        const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        
+        document.getElementById('clockTime').textContent = timeStr;
+        document.getElementById('clockDate').textContent = dateStr;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // --- Weather System (Open-Meteo API) ---
+    async function fetchWeather() {
+        try {
+            // Coordinates for Bangkok
+            const lat = 13.7563;
+            const lon = 100.5018;
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia%2FBangkok`;
+            
+            const response = await fetch(url);
+            const data = await response.json();
+            const current = data.current;
+
+            // Update DOM
+            document.getElementById('weatherTemp').textContent = `${Math.round(current.temperature_2m)}°`;
+            document.getElementById('weatherHum').textContent = `${current.relative_humidity_2m}%`;
+            document.getElementById('weatherWind').textContent = `${current.wind_speed_10m} km/h`;
+
+            // Weather Codes & Icons
+            const code = current.weather_code;
+            let iconClass = 'fa-cloud';
+            let desc = 'Cloudy';
+
+            // Simple WMO Code Mapping
+            if (code === 0) { iconClass = 'fa-sun text-yellow-500'; desc = 'Clear Sky'; }
+            else if (code >= 1 && code <= 3) { iconClass = 'fa-cloud-sun text-gray-300'; desc = 'Partly Cloudy'; }
+            else if (code >= 45 && code <= 48) { iconClass = 'fa-smog text-gray-400'; desc = 'Foggy'; }
+            else if (code >= 51 && code <= 67) { iconClass = 'fa-cloud-rain text-blue-400'; desc = 'Raining'; }
+            else if (code >= 80 && code <= 82) { iconClass = 'fa-cloud-showers-heavy text-blue-500'; desc = 'Heavy Rain'; }
+            else if (code >= 95) { iconClass = 'fa-bolt text-yellow-400'; desc = 'Thunderstorm'; }
+
+            document.getElementById('weatherDesc').textContent = desc;
+            document.getElementById('weatherIcon').innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+
+        } catch (error) {
+            console.error('Weather Fetch Error:', error);
+            document.getElementById('weatherDesc').textContent = 'Unavailable';
+        }
+    }
+    fetchWeather();
+    // Refresh weather every 30 mins
+    setInterval(fetchWeather, 1800000);
 
     const statusMap = {
         online: { color: '#ffffff', text: 'ONLINE', class: 'status-online' },
