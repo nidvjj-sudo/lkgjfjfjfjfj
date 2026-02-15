@@ -5,29 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bio Info</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script>
-    (function() {
-  const devTools = /./;
-  Object.defineProperty(devTools, 'toString', {
-    get: function() {
-      throw new Error('Developer Tools are disabled!');
-    }
-  });
-  
-})();
-
-document.addEventListener("keydown", function(e) {
-    if (e.key === "F12") {
-        e.preventDefault();
-    }
-    if ((e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
-        e.preventDefault();
-    }
-});
-document.addEventListener("contextmenu", function(e) {
-    e.preventDefault();
-});
-</script>
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Fonts -->
@@ -343,26 +320,28 @@ document.addEventListener("contextmenu", function(e) {
             <!-- Project 1 -->
             <div class="glass p-5 hover:bg-white/5 transition-all group cursor-pointer border-l-2 border-l-transparent hover:border-l-white">
                 <div class="flex justify-between items-start">
-                    <h4 class="font-bold text-lg group-hover:translate-x-2 transition-transform">Nothing</h4>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-gray-600 group-hover:text-white text-xs"></i>
+                    <h4 class="font-bold text-lg group-hover:translate-x-2 transition-transform">Private Voice Bot</h4>
+                    <a href="https://discord.com/oauth2/authorize?client_id=1469109745498587284&permissions=8&integration_type=0&scope=bot" class="fa-solid fa-arrow-up-right-from-square text-gray-600 group-hover:text-white text-xs"></a>
                 </div>
-                <p class="text-sm text-gray-400 mt-2 line-clamp-2"></p>
+                <p class="text-sm text-gray-400 mt-2 line-clamp-2">Bot discord creator private voice template</p>
                 <div class="flex gap-2 mt-4 text-[10px] mono uppercase text-gray-500">
-                    <span class="border border-white/20 px-2 py-1">Nothing</span>
-                    <span class="border border-white/20 px-2 py-1">Nothing</span>
+                    <span class="border border-white/20 px-2 py-1">PYTHON</span>
+                    <span class="border border-white/20 px-2 py-1">slash command</span>
+                    <span class="border border-white/20 px-2 py-1">/setup</span>
                 </div>
             </div>
             
             <!-- Project 2 -->
             <div class="glass p-5 hover:bg-white/5 transition-all group cursor-pointer border-l-2 border-l-transparent hover:border-l-white">
                 <div class="flex justify-between items-start">
-                    <h4 class="font-bold text-lg group-hover:translate-x-2 transition-transform">Nothing</h4>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-gray-600 group-hover:text-white text-xs"></i>
+                    <h4 class="font-bold text-lg group-hover:translate-x-2 transition-transform">Anonymous Message Bot</h4>
+                    <a href="https://discord.com/oauth2/authorize?client_id=1467309674914123999&permissions=8&integration_type=0&scope=bot" class="fa-solid fa-arrow-up-right-from-square text-gray-600 group-hover:text-white text-xs"></a>
                 </div>
-                <p class="text-sm text-gray-400 mt-2 line-clamp-2"></p>
+                <p class="text-sm text-gray-400 mt-2 line-clamp-2">This bot is designed for anonymous messages allowing you to send anonymous messages to people you don't want to reveal your identity to</p>
                 <div class="flex gap-2 mt-4 text-[10px] mono uppercase text-gray-500">
-                    <span class="border border-white/20 px-2 py-1">Nothing</span>
-                    <span class="border border-white/20 px-2 py-1">Nothing</span>
+                    <span class="border border-white/20 px-2 py-1">Node.js</span>
+                    <span class="border border-white/20 px-2 py-1">Api</span>
+                    <span class="border border-white/20 px-2 py-1">slash command</span>
                 </div>
             </div>
         </div>
@@ -407,14 +386,14 @@ document.addEventListener("contextmenu", function(e) {
     musicToggle.addEventListener('click', () => {
       if (isPlaying) {
         music.pause();
-        musicStatus.textContent = 'Play_Audio';
+        musicStatus.textContent = 'Play Audio';
         visualizer.style.opacity = '0.3';
         isPlaying = false;
       } else {
         music.play().catch(() => {
           musicStatus.textContent = 'Error';
         });
-        musicStatus.textContent = 'Stop_Audio';
+        musicStatus.textContent = 'Stop Audio';
         visualizer.style.opacity = '1';
         isPlaying = true;
       }
